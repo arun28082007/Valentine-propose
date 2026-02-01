@@ -415,6 +415,10 @@
 
     const basePadY = 12;
     const basePadX = 18;
+    
+    const SHRINK_LIMIT = 10;   // shrink 10 times
+    let noClicks = 0;          // counts NO presses
+
 
     function applyButtonSizes() {
       // YES
@@ -435,26 +439,39 @@
     applyButtonSizes();
 
     noBtn.addEventListener("click", () => {
-      // Grow YES
-      if (yesSize < MAX_YES_SIZE) {
-        yesSize = Math.min(MAX_YES_SIZE, yesSize + STEP);
-      }
+  noClicks++;
 
-      // Shrink NO
-      if (noSize > MIN_NO_SIZE) {
-        noSize = Math.max(MIN_NO_SIZE, noSize - STEP);
-      }
+  // After 10 shrinks, on the 11th click show "Try again" popup
+  if (noClicks === SHRINK_LIMIT + 1) {
+    // Update popup text
+    const tryTitle = tryBackdrop.querySelector("h2");
+    const tryPara = tryBackdrop.querySelector("p");
+    if (tryTitle) tryTitle.textContent = "Why are you breaking my heart?";
+    if (tryPara)  tryPara.textContent  = "😢";
 
-      applyButtonSizes();
+    // Show popup + disable buttons so nothing else happens
+    yesBtn.disabled = true;
+    noBtn.disabled = true;
+    tryBackdrop.style.display = "grid";
+    return;
+  }
 
-      // When NO hits the threshold => show Try Again popup (no auto-YES)
-      if (noSize <= MIN_NO_SIZE) {
-        // prevent further clicking while popup is open
-        noBtn.disabled = true;
-        yesBtn.disabled = true;
-        tryBackdrop.style.display = "grid";
-      }
-    });
+  // For the first 10 clicks: resize buttons
+  if (noClicks <= SHRINK_LIMIT) {
+    // Grow YES
+    if (yesSize < MAX_YES_SIZE) {
+      yesSize = Math.min(MAX_YES_SIZE, yesSize + STEP);
+    }
+
+    // Shrink NO
+    if (noSize > MIN_NO_SIZE) {
+      noSize = Math.max(MIN_NO_SIZE, noSize - STEP);
+    }
+
+    applyButtonSizes();
+  }
+});
+tryBtn.addEventListener("click", () => window.location.reload());
 
     function reloadPage() {
       // reload the page so everything resets
