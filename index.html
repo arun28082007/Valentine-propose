@@ -13,7 +13,8 @@
       --card:#ffffffee;
       --text:#111;
       --muted:#666;
-      --border:rgba(0,0,0,.10);
+
+      --border:rgba(255,45,109,.22);
       --shadow:0 18px 55px rgba(0,0,0,.10);
 
       --yesHover:#ff2d6d; /* pinkish-red */
@@ -43,7 +44,6 @@
       inset:-40px;
       pointer-events:none;
       opacity:.22;
-      filter: blur(.2px);
       z-index:0;
     }
     .bg-hearts span{
@@ -52,6 +52,7 @@
       transform: rotate(-12deg);
       animation: drift 10s ease-in-out infinite;
       user-select:none;
+      filter: blur(.2px);
     }
     .bg-hearts span:nth-child(1){ left:6%;  top:10%; animation-duration: 12s; }
     .bg-hearts span:nth-child(2){ left:72%; top:12%; animation-duration: 14s; transform: rotate(18deg); }
@@ -73,7 +74,7 @@
     .card{
       position:relative;
       background: var(--card);
-      border:1px solid rgba(255,45,109,.18);
+      border:1px solid var(--border);
       border-radius:22px;
       padding: clamp(22px, 4vw, 36px);
       box-shadow: var(--shadow);
@@ -96,7 +97,6 @@
       filter: blur(.2px);
     }
 
-    /* Use inline SVG hearts as a background image (big, pink) */
     .card::before{
       background-image:
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='260' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2d6d' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E"),
@@ -104,7 +104,6 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2d6d' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E");
     }
 
-    /* a second layer for depth */
     .card::after{
       opacity:.12;
       background-size: 220px 220px, 300px 300px, 180px 180px;
@@ -115,11 +114,7 @@
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff66a3' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E");
     }
 
-    /* Content sits above heart layers */
-    .content{
-      position:relative;
-      z-index:1;
-    }
+    .content{ position:relative; z-index:1; }
 
     h1{
       margin:0 0 10px;
@@ -128,7 +123,6 @@
       letter-spacing:-0.2px;
       text-shadow: 0 2px 0 rgba(255,255,255,.35);
     }
-
     .sub{
       margin:0 0 22px;
       color:var(--muted);
@@ -149,7 +143,7 @@
       font-size:16px;
       font-weight:800;
       cursor:pointer;
-      border:1px solid var(--border);
+      border:1px solid rgba(0,0,0,.10);
       background:#fff;
       transition: transform .15s ease, box-shadow .15s ease, font-size .15s ease, padding .15s ease, background .15s ease, border-color .15s ease, color .15s ease;
       user-select:none;
@@ -167,7 +161,6 @@
     }
     #noBtn{ color:var(--muted); }
 
-    /* Hover effects + emoji pop */
     #yesBtn:hover{
       background:var(--yesHover);
       border-color:var(--yesHover);
@@ -198,7 +191,7 @@
       transform:translate(-50%, -130%) scale(1);
     }
 
-    /* Popup */
+    /* Popups */
     .modalBackdrop{
       position:fixed; inset:0;
       background:rgba(0,0,0,.42);
@@ -207,15 +200,41 @@
       padding:18px;
       z-index:10;
     }
+
     .modal{
-      width:min(540px,96vw);
+      width:min(560px,96vw);
       background:#fff;
-      border:1px solid rgba(255,45,109,.20);
+      border:1px solid rgba(255,45,109,.24);
       border-radius:18px;
       padding:22px 20px;
       box-shadow:0 28px 80px rgba(0,0,0,.18);
       text-align:center;
+      position:relative;
+      overflow:hidden;
     }
+
+    /* BIG pink hearts INSIDE the dialog background */
+    .modal::before{
+      content:"";
+      position:absolute;
+      inset:-30px;
+      pointer-events:none;
+      opacity:.16;
+      background-repeat:no-repeat;
+      background-size: 240px 240px, 300px 300px, 180px 180px;
+      background-position: 10% 20%, 90% 22%, 70% 85%;
+      filter: blur(.2px);
+      background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2d6d' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff66a3' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E"),
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 24 24'%3E%3Cpath fill='%23ff2d6d' d='M12 21s-7.2-4.5-9.6-8.7C.3 8.9 2.1 5.5 5.7 5.2c1.7-.1 3.3.8 4.3 2c1-1.2 2.6-2.1 4.3-2c3.6.3 5.4 3.7 3.3 7.1C19.2 16.5 12 21 12 21z'/%3E%3C/svg%3E");
+    }
+
+    .modalContent{
+      position:relative;
+      z-index:1;
+    }
+
     .modal h2{
       margin:8px 0 10px;
       font-size:26px;
@@ -237,7 +256,6 @@
 </head>
 
 <body>
-  <!-- Page background hearts -->
   <div class="bg-hearts" aria-hidden="true">
     <span style="--r:-10deg;">💗</span>
     <span style="--r:16deg;">💖</span>
@@ -251,7 +269,7 @@
   <div class="wrap">
     <main class="card">
       <div class="content">
-        <h1>Will you be my forever Valentine, <span id="name">Babyy</span>? 💘</h1>
+        <h1>Will you be my forever Valentine, <span id="name">Ushasi</span>? 💘</h1>
         <p class="sub">Just one click away.</p>
 
         <div class="buttons">
@@ -269,7 +287,6 @@
     </main>
   </div>
 
-  <!-- Put ajab-si.mp3 in the SAME folder as this HTML (or repo root for GitHub Pages) -->
   <audio id="song" preload="auto">
     <source src="ajab-si.mp3" type="audio/mpeg" />
   </audio>
@@ -277,26 +294,30 @@
   <!-- YES popup -->
   <div class="modalBackdrop" id="yesBackdrop" role="dialog" aria-modal="true">
     <div class="modal">
-      <div style="font-size:40px">🤍</div>
-      <h2>Yay!</h2>
-      <p>I knew it, you would say yes !! </p>
-      <button id="yesCloseBtn">Close</button>
+      <div class="modalContent">
+        <div style="font-size:40px">🤍</div>
+        <h2>Yay!</h2>
+        <p>Forever Valentine it is. 💘</p>
+        <button id="yesCloseBtn">Close</button>
+      </div>
     </div>
   </div>
 
   <!-- TRY AGAIN popup -->
   <div class="modalBackdrop" id="tryBackdrop" role="dialog" aria-modal="true">
     <div class="modal">
-      <div style="font-size:40px">😤</div>
-      <h2>Try again</h2>
-      <p>Nope. That “No” is not allowed here 😌</p>
-      <button id="tryBtn">Try again</button>
+      <div class="modalContent">
+        <div style="font-size:40px">💔</div>
+        <h2>Why are you breaking my heart?</h2>
+        <p>Try again 😢</p>
+        <button id="tryBtn">Try again</button>
+      </div>
     </div>
   </div>
 
   <script>
     // Personalization
-    const HER_NAME = "Babbyy";
+    const HER_NAME = "Ushasi";
     document.getElementById("name").textContent = HER_NAME;
 
     const yesBtn = document.getElementById("yesBtn");
@@ -385,7 +406,7 @@
 
       try {
         song.currentTime = 0;
-        await song.play(); // triggered by click
+        await song.play();
       } catch (e) {
         console.log("Audio play issue:", e);
       }
@@ -396,8 +417,6 @@
     function closeYesModal() {
       yesBackdrop.style.display = "none";
       stopConfetti();
-      // Optional: keep music playing, or pause:
-      // song.pause();
     }
 
     yesCloseBtn.addEventListener("click", closeYesModal);
@@ -405,20 +424,19 @@
       if (e.target === yesBackdrop) closeYesModal();
     });
 
-    /* ===== NO CLICK: YES grows, NO shrinks by 5px. When NO reaches min => Try Again popup + reload ===== */
-    let yesSize = 16; // px
-    let noSize = 16;  // px
+    /* ===== NO ACTION: shrink 10 times, on 11th click show TRY AGAIN popup ===== */
+    let yesSize = 16;
+    let noSize = 16;
 
     const STEP = 5;
-    const MIN_NO_SIZE = 6;   // threshold
-    const MAX_YES_SIZE = 52; // cap
+    const MIN_NO_SIZE = 6;
+    const MAX_YES_SIZE = 52;
+
+    const SHRINK_LIMIT = 10;
+    let noClicks = 0;
 
     const basePadY = 12;
     const basePadX = 18;
-    
-    const SHRINK_LIMIT = 10;   // shrink 10 times
-    let noClicks = 0;          // counts NO presses
-
 
     function applyButtonSizes() {
       // YES
@@ -435,49 +453,31 @@
         Math.max(6, basePadY - noDelta * 0.6) + "px " +
         Math.max(10, basePadX - noDelta * 0.8) + "px";
     }
-
     applyButtonSizes();
 
     noBtn.addEventListener("click", () => {
-  noClicks++;
+      noClicks++;
 
-  // After 10 shrinks, on the 11th click show "Try again" popup
-  if (noClicks === SHRINK_LIMIT + 1) {
-    // Update popup text
-    const tryTitle = tryBackdrop.querySelector("h2");
-    const tryPara = tryBackdrop.querySelector("p");
-    if (tryTitle) tryTitle.textContent = "Why are you breaking my heart?";
-    if (tryPara)  tryPara.textContent  = "😢";
+      // On the 11th click show TRY AGAIN popup
+      if (noClicks === SHRINK_LIMIT + 1) {
+        yesBtn.disabled = true;
+        noBtn.disabled = true;
+        tryBackdrop.style.display = "grid";
+        return;
+      }
 
-    // Show popup + disable buttons so nothing else happens
-    yesBtn.disabled = true;
-    noBtn.disabled = true;
-    tryBackdrop.style.display = "grid";
-    return;
-  }
+      // First 10 clicks: resize
+      if (noClicks <= SHRINK_LIMIT) {
+        if (yesSize < MAX_YES_SIZE) yesSize = Math.min(MAX_YES_SIZE, yesSize + STEP);
+        if (noSize > MIN_NO_SIZE) noSize = Math.max(MIN_NO_SIZE, noSize - STEP);
+        applyButtonSizes();
+      }
+    });
 
-  // For the first 10 clicks: resize buttons
-  if (noClicks <= SHRINK_LIMIT) {
-    // Grow YES
-    if (yesSize < MAX_YES_SIZE) {
-      yesSize = Math.min(MAX_YES_SIZE, yesSize + STEP);
-    }
-
-    // Shrink NO
-    if (noSize > MIN_NO_SIZE) {
-      noSize = Math.max(MIN_NO_SIZE, noSize - STEP);
-    }
-
-    applyButtonSizes();
-  }
-});
-tryBtn.addEventListener("click", () => window.location.reload());
-
+    /* ===== TRY AGAIN: reload ===== */
     function reloadPage() {
-      // reload the page so everything resets
       window.location.reload();
     }
-
     tryBtn.addEventListener("click", reloadPage);
     tryBackdrop.addEventListener("click", (e) => {
       if (e.target === tryBackdrop) reloadPage();
